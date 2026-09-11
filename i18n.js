@@ -13,7 +13,7 @@ xhttp.onreadystatechange = function() {
         main_div.style.display = 'block';
     }
 }
-xhttp.open("GET", "../index.html"); //Get the english version
+xhttp.open("GET", "../2020.html"); // Get the archived English version.
 xhttp.send();
 
 var translated_images = i18n_data.images || ["cares.svg","ninety.svg","plane.png","poverty.svg"];
@@ -43,4 +43,3 @@ function translate_page(response){
         document.body.appendChild(script);
     } 
 }
-
