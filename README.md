@@ -45,7 +45,7 @@ or resizing preserves the current section and proportional progress through it.
 
 ## Attribution
 
-Adapted from [EatTheRichTextFormat/1-pixel-wealth](https://github.com/EatTheRichTextFormat/1-pixel-wealth).
+Adapted (with AI :duh:) from [EatTheRichTextFormat/1-pixel-wealth](https://github.com/EatTheRichTextFormat/1-pixel-wealth).
 
 [Original idea by Jersey Len (mkorostoff) (2020)](https://github.com/mkorostoff).
 
