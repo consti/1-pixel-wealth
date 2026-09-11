@@ -335,19 +335,19 @@ figcaption span {
       90deg,
       transparent 0,
       transparent 498px,
-      #40221688 498px,
-      #40221688 500px
+      #ffffff99 498px,
+      #ffffff99 500px
     ),
     repeating-linear-gradient(
       90deg,
       transparent 0,
-      transparent 99px,
-      #40221688 99px,
-      #40221688 100px
+      transparent 98px,
+      #ffffff80 98px,
+      #ffffff80 100px
     );
   background-size:
-    500px 26px,
-    100px 18px;
+    500px 32px,
+    100px 22px;
   background-repeat: repeat-x;
   background-position: left bottom;
 }
@@ -587,19 +587,19 @@ body[data-axis="vertical"] .fortune > .money-surface {
       180deg,
       transparent 0,
       transparent 498px,
-      #40221688 498px,
-      #40221688 500px
+      #ffffff99 498px,
+      #ffffff99 500px
     ),
     repeating-linear-gradient(
       180deg,
       transparent 0,
-      transparent 99px,
-      #40221688 99px,
-      #40221688 100px
+      transparent 98px,
+      #ffffff80 98px,
+      #ffffff80 100px
     );
   background-size:
-    26px 500px,
-    18px 100px;
+    32px 500px,
+    22px 100px;
   background-repeat: repeat-y;
   background-position: right top;
 }
