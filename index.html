@@ -26,7 +26,7 @@
       <div class="tools">
         <button id="statistics-open" type="button">Explore statistics</button>
         <button id="compare-open" type="button">
-          Compare fortunes <span aria-hidden="true">↗</span>
+          Compare wealth <span aria-hidden="true">↗</span>
         </button>
         <div class="axis-control" role="group" aria-label="Scroll direction">
           <button type="button" data-axis="horizontal" aria-pressed="true">
@@ -272,6 +272,44 @@
         <strong>compressed overview</strong>; the journey uses the full pixel
         scale.
       </p>
+      <form id="personal-wealth-form" novalidate>
+        <label for="personal-wealth-input"
+          >Where do you fit? Your net worth in USD</label
+        >
+        <p id="personal-wealth-help">
+          What you own minus what you owe. Your entry stays in this tab and
+          disappears when you reload.
+        </p>
+        <div class="personal-input-row">
+          <input
+            id="personal-wealth-input"
+            maxlength="32"
+            type="text"
+            inputmode="decimal"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="e.g. 100,000"
+            aria-describedby="personal-wealth-help personal-wealth-error"
+          />
+          <button type="submit" disabled>Compare mine</button>
+        </div>
+        <p id="personal-wealth-error" role="alert"></p>
+      </form>
+      <section
+        id="personal-wealth-result"
+        hidden
+        aria-label="Your wealth comparison"
+      >
+        <p id="personal-wealth-summary" role="status"></p>
+        <div class="personal-actions">
+          <button id="personal-wealth-explore" type="button">
+            See yours to scale <span aria-hidden="true">→</span>
+          </button>
+          <button id="personal-wealth-clear" type="button">
+            Clear my amount
+          </button>
+        </div>
+      </section>
       <div id="comparison-list"></div>
       <p class="source-note">
         <a

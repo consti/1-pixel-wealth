@@ -14,6 +14,30 @@
     maximumFractionDigits: 0,
   });
   let person = snapshot.people[0];
+  let personalWealth = null;
+  const personalInput = document.getElementById("personal-wealth-input");
+  const personalError = document.getElementById("personal-wealth-error");
+  const precise = new Intl.NumberFormat("en-US", {
+    maximumSignificantDigits: 3,
+  });
+  const personalMoney = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+  const personalStory = {
+    id: "personal",
+    fraction: 0.001,
+    label: "Your wealth",
+    title: "Your wealth, in the picture.",
+    visual: "personal",
+    source: "Your entry · kept only in this tab",
+  };
+  const contextStories = () =>
+    personalWealth === null
+      ? window.WEALTH_CONTEXT
+      : [personalStory, ...window.WEALTH_CONTEXT];
   let axis = "horizontal";
   let thickness = 500;
   let length = 0;
@@ -135,7 +159,7 @@
       at: mark.value / snapshot.dollarsPerPixel / thickness,
     }));
     // Give each narrative room to pin without covering an exact wealth marker.
-    window.WEALTH_CONTEXT.forEach((story) => {
+    contextStories().forEach((story) => {
       let at = story.fraction * length;
       let collision;
       while (
@@ -217,7 +241,21 @@
     const pct = ((story.value / total) * 100).toFixed(2);
     let visual = "";
     let outcome = "";
-    if (story.visual === "square") {
+    if (story.visual === "personal") {
+      const side = Math.sqrt(
+        Math.max(0, personalWealth) / snapshot.dollarsPerPixel,
+      );
+      visual = `<div class="personal-scale-frame" tabindex="0" role="region" aria-label="Your wealth at the same pixel scale; scroll inside to see larger squares"><span class="personal-scale-square" style="width:${side}px;height:${side}px" aria-hidden="true"></span></div><p class="personal-pixel-caption">${personalMoney.format(personalWealth)} · ${precise.format(Math.max(0, personalWealth) / snapshot.dollarsPerPixel)} square pixels</p>`;
+      outcome = personalComparison(person);
+      const description =
+        personalWealth > 0
+          ? `One pixel of area still represents $1,000. ${personalWealth < 1000 ? "Your square is smaller than one pixel; the browser may not visibly draw it." : "Large squares can be explored by scrolling inside the frame."}`
+          : personalWealth < 0
+            ? "Your balance represents net debt, so there is no positive wealth area to draw. A negative balance cannot be shown as a filled money square."
+            : "At $0, there is no wealth area to draw. Wealth multiples are undefined for a zero balance.";
+      article.innerHTML = `<p class="eyebrow">In perspective · your own wealth</p><h3>${story.title}</h3>${visual}<p class="story-description">${description}</p><p class="story-outcome">${outcome}</p><p class="source-note">${story.source}. <button type="button" class="edit-personal-wealth">Edit or clear your amount</button></p><div class="story-navigation"><span>The fortune behind this card belongs to ${person.name}.</span><button type="button" data-context-next="story:income">Next statistic ${axis === "horizontal" ? "→" : "↓"}</button></div>`;
+      return article;
+    } else if (story.visual === "square") {
       const side = Math.sqrt(story.value / snapshot.dollarsPerPixel);
       visual = `<div class="context-square-row"><span class="context-square" style="width:${side}px;height:${side}px" aria-label="${money.format(story.value)}, drawn to scale"></span><span>${money.format(story.value)}<small>${format.format(story.value / snapshot.dollarsPerPixel)} square pixels · same scale</small></span></div>`;
       outcome = `${format.format(total / story.value)} ${story.unit} equal ${person.name}’s fortune.`;
@@ -248,13 +286,34 @@
           `<a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.source} ↗</a>`,
       )
       .join(" · ");
-    const index = window.WEALTH_CONTEXT.indexOf(story);
-    const next = window.WEALTH_CONTEXT[index + 1];
+    const index = contextStories().indexOf(story);
+    const next = contextStories()[index + 1];
     article.innerHTML = `<p class="eyebrow">In perspective · ${story.label}</p><h3>${story.title}</h3>${visual}<p class="story-description">${story.description}</p><p class="story-outcome">${outcome}</p><p class="source-note">${sourceLinks}</p><div class="story-navigation"><span>Scroll on. This comparison stays with you.</span><button type="button" data-context-next="${next ? `story:${next.id}` : "end"}">${next ? "Next statistic" : "The other edge"} <span aria-hidden="true">${axis === "horizontal" ? "→" : "↓"}</span></button></div>`;
     return article;
   }
 
+  function personalComparison(p) {
+    const fortuneValue = amount(p);
+    if (personalWealth <= 0)
+      return `${p.name}’s net worth is ${personalMoney.format(fortuneValue - personalWealth)} higher than your balance.`;
+    if (personalWealth === fortuneValue)
+      return `Your entered wealth equals ${p.name}’s estimated net worth.`;
+    if (personalWealth > fortuneValue)
+      return `Your entered wealth is about ${format.format(personalWealth / fortuneValue)}× ${p.name}’s fortune.`;
+    return `${p.name}’s fortune is about ${format.format(fortuneValue / personalWealth)}× your wealth. You have ${precise.format((personalWealth / fortuneValue) * 100)}% of that fortune.`;
+  }
+
+  function renderPersonalSummary() {
+    document.getElementById("personal-wealth-result").hidden =
+      personalWealth === null;
+    document.getElementById("personal-wealth-summary").textContent =
+      personalWealth === null
+        ? ""
+        : `Your net worth: ${personalMoney.format(personalWealth)}. ${personalComparison(person)}`;
+  }
+
   function renderComparison() {
+    renderPersonalSummary();
     const list = document.getElementById("comparison-list");
     list.replaceChildren();
     snapshot.people.forEach((p) => {
@@ -268,6 +327,12 @@
       );
       // All content comes from the checked-in snapshot, never external input.
       button.innerHTML = `<span class="person-line"><strong>${p.name}</strong><span>${short(p)} ↗</span></span><span class="person-meta"><span>${p.company}</span><span>${share}% of Musk</span></span><span class="mini-track" aria-hidden="true"><span class="mini-bar" style="--share:${share}%"></span></span>`;
+      if (personalWealth !== null) {
+        const personal = document.createElement("span");
+        personal.className = "personal-person-comparison";
+        personal.textContent = personalComparison(p);
+        button.append(personal);
+      }
       button.addEventListener("click", () => {
         person = p;
         document
@@ -335,6 +400,66 @@
   }
 
   document
+    .getElementById("personal-wealth-form")
+    .addEventListener("submit", (event) => {
+      event.preventDefault();
+      const raw = personalInput.value.trim().replace(/^\$\s*/, "");
+      let cents;
+      if (/^-?\$?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d{1,2})?$/.test(raw)) {
+        const normalized = raw.replace(/[$,]/g, "");
+        const negative = normalized.startsWith("-");
+        const [whole, fraction = ""] = normalized.replace(/^-/, "").split(".");
+        cents =
+          (BigInt(whole) * 100n + BigInt(fraction.padEnd(2, "0"))) *
+          (negative ? -1n : 1n);
+      }
+      if (
+        cents === undefined ||
+        cents > 9000000000000000n ||
+        cents < -9000000000000000n
+      ) {
+        personalError.textContent =
+          "Enter a USD amount, such as 100,000 or -5,000, with at most two decimal places (up to $90 trillion).";
+        personalInput.setAttribute("aria-invalid", "true");
+        personalInput.focus();
+        return;
+      }
+      personalError.textContent = "";
+      personalInput.removeAttribute("aria-invalid");
+      const saved = capturePosition();
+      personalWealth = Number(cents) / 100;
+      layout(saved);
+      renderComparison();
+    });
+  document.querySelector('#personal-wealth-form [type="submit"]').disabled =
+    false;
+  document
+    .getElementById("personal-wealth-explore")
+    .addEventListener("click", () => {
+      dialog.close();
+      go("story:personal");
+      document
+        .querySelector("#story-personal .story-card")
+        .focus({ preventScroll: true });
+    });
+  document
+    .getElementById("personal-wealth-clear")
+    .addEventListener("click", () => {
+      const saved = capturePosition();
+      personalWealth = null;
+      personalInput.value = "";
+      personalError.textContent = "";
+      personalInput.removeAttribute("aria-invalid");
+      layout(saved);
+      renderComparison();
+      personalInput.focus();
+    });
+  personalInput.addEventListener("input", () => {
+    personalError.textContent = "";
+    personalInput.removeAttribute("aria-invalid");
+  });
+
+  document
     .querySelectorAll("[data-go]")
     .forEach((button) =>
       button.addEventListener("click", () => go(button.dataset.go)),
@@ -344,6 +469,10 @@
     .getElementById("statistics-open")
     .addEventListener("click", () => go("story:income"));
   document.getElementById("milestones").addEventListener("click", (event) => {
+    if (event.target.closest(".edit-personal-wealth")) {
+      dialog.showModal();
+      personalInput.focus();
+    }
     const next = event.target.closest("[data-context-next]");
     if (next) go(next.dataset.contextNext);
   });
@@ -395,6 +524,13 @@
         Math.abs(event.deltaX) >= Math.abs(event.deltaY)
       )
         return;
+      const frame = event.target.closest(".personal-scale-frame");
+      if (
+        frame &&
+        (frame.scrollWidth > frame.clientWidth ||
+          frame.scrollHeight > frame.clientHeight)
+      )
+        return;
       const panel = event.target.closest(".panel, .story-card");
       if (
         panel &&
@@ -421,6 +557,7 @@
       event.ctrlKey ||
       event.metaKey ||
       event.altKey ||
+      event.target.closest(".personal-scale-frame") ||
       /^(INPUT|SELECT|TEXTAREA|BUTTON|A)$/.test(event.target.tagName)
     )
       return;

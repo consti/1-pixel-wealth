@@ -1112,3 +1112,121 @@ body[data-axis="vertical"] .ruler-key {
     display: none;
   }
 }
+
+#personal-wealth-form {
+  margin: 24px 0 0;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+}
+#personal-wealth-form label {
+  font-size: 14px;
+  font-weight: 600;
+}
+#personal-wealth-help {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 8px 0 12px;
+}
+.personal-input-row {
+  display: flex;
+  gap: 8px;
+}
+.personal-input-row input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 3px;
+  padding: 12px;
+  font:
+    16px Arial,
+    sans-serif;
+  color: var(--ink);
+}
+.personal-input-row input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.personal-input-row button {
+  background: var(--ink);
+  color: white;
+  border-radius: 3px;
+  padding: 10px 15px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.personal-input-row button:hover {
+  background: var(--accent);
+}
+#personal-wealth-error {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #a33315;
+  margin: 8px 0 0;
+}
+#personal-wealth-error:empty {
+  display: none;
+}
+#personal-wealth-result {
+  padding: 16px;
+  background: #e9eddf;
+  border: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+#personal-wealth-summary {
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 0 0 12px;
+}
+.personal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+.personal-actions button {
+  padding: 3px 0;
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.personal-person-comparison {
+  display: block;
+  margin-top: 10px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.personal-scale-frame {
+  width: 100%;
+  height: 100px;
+  overflow: auto;
+  scrollbar-width: thin;
+  border: 1px solid var(--line);
+  padding: 12px;
+  background: white;
+}
+.personal-scale-square {
+  display: block;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.personal-pixel-caption {
+  font: 11px monospace;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+.edit-personal-wealth {
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font: inherit;
+}
+@media (max-width: 380px) {
+  .personal-input-row {
+    flex-wrap: wrap;
+  }
+  .personal-input-row button {
+    width: 100%;
+  }
+}

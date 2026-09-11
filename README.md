@@ -4,11 +4,6 @@ A static, dependency-free visualization: one CSS pixel of colored area represent
 $1,000. Open `index.html` directly, or serve the folder with any static file server.
 No build step, API key, backend, or live data request is needed.
 
-Published at [consti.github.io/1-pixel-wealth](https://consti.github.io/1-pixel-wealth/).
-GitHub Pages serves the repository root from the `translation` default branch.
-The `.nojekyll` file keeps publishing as plain static files. Updates to that
-branch are published automatically.
-
 The journey scrolls horizontally by default. The direction control switches to
 vertical scrolling while preserving your place. Compare fortunes selects a new
 person; jump controls navigate to comparison markers. Mouse wheels, trackpads,
@@ -93,3 +88,18 @@ scale; rings and the 400-person dot grid are explicitly different visual units.
 Use **Explore statistics**, the **Jump to** menu, or **Next statistic** to revisit
 these sections. Narrow or short viewports allow the narrative itself to scroll
 so that its source and navigation remain accessible.
+
+## A visitor's own wealth
+
+The comparison dialog accepts a visitor's net worth in USD, with optional dollar
+sign, comma thousands separators, a minus sign, and up to two decimal places.
+Submitting it adds comparisons against all eight fortunes and a **Your wealth**
+sticky section. The visitor's square uses exactly the same area formula; large
+squares scroll within their frame instead of being shrunk to fit. Amounts below
+$1,000 are explicitly described as smaller than one pixel. Zero and negative
+balances have no positive filled area, and use differences rather than ratios.
+
+The entry exists only in page memory: it is not sent to a server or saved in
+cookies, local storage, or the URL. **Clear my amount** removes it; reloading
+starts over. The selected billionaire and scroll-direction controls continue to
+work with the personal comparison. GitHub Pages publishing is not configured.
