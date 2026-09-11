@@ -43,13 +43,13 @@ labeled as a compressed overview, not part of the literal pixel scale.
 The footer measures money passed at the viewport's leading edge. Switching axes
 or resizing preserves the current section and proportional progress through it.
 
-## Original essay
+## Attribution
 
-Adapted from [Matt Korostoff’s 1 Pixel Wealth](https://mkorostoff.github.io/1-pixel-wealth/),
-under the existing GPL-3.0 license. The original essay and historical figures are
-preserved in `2020.html`; `de/` remains its German translation. These use the
-original `main.css` and `main.js`. Serve the folder over HTTP to load the German
-archive, which uses the original translation loader.
+Adapted from [EatTheRichTextFormat/1-pixel-wealth](https://github.com/EatTheRichTextFormat/1-pixel-wealth).
+
+[Original idea by Jersey Len (mkorostoff) (2020)](https://github.com/mkorostoff).
+
+Licensed under the existing [GPL-3.0 license](LICENSE.txt).
 
 ## Restored context and sticky storytelling
 
