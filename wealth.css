@@ -335,8 +335,8 @@ figcaption span {
       90deg,
       transparent 0,
       transparent 498px,
-      #ffffff99 498px,
-      #ffffff99 500px
+      #ffffff 498px,
+      #ffffff 500px
     ),
     repeating-linear-gradient(
       90deg,
@@ -587,8 +587,8 @@ body[data-axis="vertical"] .fortune > .money-surface {
       180deg,
       transparent 0,
       transparent 498px,
-      #ffffff99 498px,
-      #ffffff99 500px
+      #ffffff 498px,
+      #ffffff 500px
     ),
     repeating-linear-gradient(
       180deg,
